@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Debug - Wallet Pro</title>
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #00e676;
+        }
+
+        .section {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        pre {
+            background: #000;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        button {
+            background: #ffffff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .error {
+            color: #ff1744;
+        }
+
+        .success {
+            color: #00e676;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔍 Firebase Database Inspector</h1>
+
+    <div class="section">
+        <h2>Current User</h2>
+        <pre id="user-info">Not logged in</pre>
+    </div>
+
+    <div class="section">
+        <h2>All Transactions</h2>
+        <button onclick="loadTransactions()">Refresh Transactions</button>
+        <pre id="transactions-data">Click refresh to load...</pre>
+    </div>
+
+    <div class="section">
+        <h2>All Deposits</h2>
+        <button onclick="loadDeposits()">Refresh Deposits</button>
+        <pre id="deposits-data">Click refresh to load...</pre>
+    </div>
+
+    <div class="section">
+        <h2>All Users</h2>
+        <button onclick="loadUsers()">Refresh Users</button>
+        <pre id="users-data">Click refresh to load...</pre>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyDBvx95-z7mI5L4bMjlgX0JPIfIx1bqgDs",
+          authDomain: "wallet-pro-778c6.firebaseapp.com",
+          databaseURL: "https://wallet-pro-778c6-default-rtdb.firebaseio.com",
+          projectId: "wallet-pro-778c6",
+          storageBucket: "wallet-pro-778c6.firebasestorage.app",
+          messagingSenderId: "605635863081",
+          appId: "1:605635863081:web:4b887bcb3a8aa13c96f238"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('user-info').innerHTML = `
+<span class="success">✓ Logged in</span>
+UID: ${user.uid}
+Email: ${user.email}
+                `.trim();
+            } else {
+                document.getElementById('user-info').innerHTML = '<span class="error">✗ Not logged in</span>\n\nPlease log in through the main app first.';
+            }
+        });
+
+        window.loadTransactions = async function () {
+            const el = document.getElementById('transactions-data');
+            el.textContent = 'Loading...';
+            try {
+                const snapshot = await get(ref(db, 'transactions'));
+                const data = snapshot.val();
+                if (data) {
+                    el.textContent = JSON.stringify(data, null, 2);
+                    el.innerHTML += `\n\n<span class="success">Total: ${Object.keys(data).length} transactions</span>`;
+                } else {
+                    el.innerHTML = '<span class="error">No transactions found in database</span>';
+                }
+            } catch (error) {
+                el.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+            }
+        };
+
+        window.loadDeposits = async function () {
+            const el = document.getElementById('deposits-data');
+            el.textContent = 'Loading...';
+            try {
+                const snapshot = await get(ref(db, 'deposits'));
+                const data = snapshot.val();
+                if (data) {
+                    el.textContent = JSON.stringify(data, null, 2);
+                    el.innerHTML += `\n\n<span class="success">Total: ${Object.keys(data).length} deposits</span>`;
+                } else {
+                    el.innerHTML = '<span class="error">No deposits found in database</span>';
+                }
+            } catch (error) {
+                el.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+            }
+        };
+
+        window.loadUsers = async function () {
+            const el = document.getElementById('users-data');
+            el.textContent = 'Loading...';
+            try {
+                const snapshot = await get(ref(db, 'users'));
+                const data = snapshot.val();
+                if (data) {
+                    el.textContent = JSON.stringify(data, null, 2);
+                    el.innerHTML += `\n\n<span class="success">Total: ${Object.keys(data).length} users</span>`;
+                } else {
+                    el.innerHTML = '<span class="error">No users found in database</span>';
+                }
+            } catch (error) {
+                el.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+            }
+        };
+    </script>
+</body>
+
+</html>

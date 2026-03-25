@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Wallet Pro | Premium Investment App</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        /* Custom styles specifically for the download landing page */
+        body {
+            background: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Premium Background with Grid & Glow */
+        .bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            pointer-events: none;
+            mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 70%);
+        }
+
+        .bg-glows {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .glow-1 {
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 200, 83, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+        }
+
+        .glow-2 {
+            position: absolute;
+            bottom: -20%;
+            right: -10%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(124, 95, 230, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(70px);
+        }
+
+        .download-hero {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .download-card {
+            background: linear-gradient(145deg, rgba(15, 15, 25, 0.9), rgba(8, 8, 16, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 50px 40px;
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(0,200,83,0.1);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: relative;
+        }
+
+        .download-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            border-radius: 24px 24px 0 0;
+            opacity: 0.8;
+        }
+
+        @keyframes icon-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .app-icon {
+            width: 110px;
+            height: 110px;
+            border-radius: 24px;
+            margin: 0 auto 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 20px rgba(0, 200, 83, 0.3);
+            border: 2px solid rgba(255,255,255,0.05);
+            object-fit: cover;
+            animation: icon-float 6s infinite ease-in-out;
+            background: #ffffff;
+        }
+
+        .download-title {
+            font-size: 2.4rem;
+            margin-bottom: 12px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .download-desc {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        /* Features List */
+        .features-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 20px 24px;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+        }
+
+        .feature-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-item-icon {
+            min-width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(0, 200, 83, 0.1);
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+
+        .feature-item-text {
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .feature-item-text strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Download Button */
+        .download-btn {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 18px 32px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0,200,83,0.35);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,200,83,0.5);
+        }
+
+        .download-btn:hover::after {
+            left: 150%;
+        }
+
+        .download-btn i {
+            font-size: 1.3rem;
+            animation: bounce 2s infinite;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 24px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .file-info span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Floating elements from global styles */
+        .icon-floating {
+            position: absolute;
+            color: rgba(255,255,255,0.03);
+            z-index: 1;
+            pointer-events: none;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        /* Security Banner */
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 200, 83, 0.1);
+            border: 1px solid rgba(0, 200, 83, 0.2);
+            color: var(--success);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        @media(max-width: 480px) {
+            .download-card { padding: 40px 24px; }
+            .download-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Backgrounds -->
+    <div class="bg-grid"></div>
+    <div class="bg-glows">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+    </div>
+
+    <!-- Floating Icons for depth -->
+    <i class="fa-brands fa-bitcoin icon-floating" style="top: 15%; left: 10%; font-size: 4rem; animation-duration: 12s;"></i>
+    <i class="fa-solid fa-chart-line icon-floating" style="bottom: 20%; right: 15%; font-size: 5rem; animation-duration: 15s; animation-delay: 2s;"></i>
+    <i class="fa-solid fa-shield-halved icon-floating" style="top: 25%; right: 10%; font-size: 3rem; animation-duration: 14s; animation-delay: 1s;"></i>
+
+    <div class="download-hero">
+        <div class="download-card animate-fade-in">
+            
+            <div class="security-badge">
+                <i class="fa-solid fa-shield-check"></i> 100% Secure & Verified
+            </div>
+
+            <img src="wallet_pro_app_icon_1773473615077.png" alt="Wallet Pro Icon" class="app-icon" onerror="this.src='https://via.placeholder.com/110/000000/ffffff?text=Icon'">
+            
+            <h1 class="download-title text-gradient">Wallet Pro App</h1>
+            <p class="download-desc">
+                Grow your investments effortlessly. Experience seamless trading, bank-grade security, and instant UPI withdrawals all in one premium app.
+            </p>
+
+            <div class="features-box">
+                <div class="feature-item">
+                    <div class="feature-item-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="feature-item-text"><strong>Instant Withdrawals:</strong> Auto-transfer directly to your UPI ID without delays.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-item-icon"><i class="fa-solid fa-lock"></i></div>
+                    <div class="feature-item-text"><strong>Bank-Grade Security:</strong> Independent wallet system that protects your bank application.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-item-icon"><i class="fa-solid fa-gift"></i></div>
+                    <div class="feature-item-text"><strong>Sign-Up Reward:</strong> Get a guaranteed ₹1,000 bonus upon completing your first tasks.</div>
+                </div>
+            </div>
+
+            <!-- Download link points to the ZIP file present in the directory -->
+            <a href="https://www.mediafire.com/file/qma1u082sv0uyhj/Walletpro.apk/file" target="_blank" rel="noopener noreferrer" class="download-btn">
+                <i class="fa-solid fa-cloud-arrow-down"></i> Download Application
+            </a>
+
+            <div class="file-info">
+                <span><i class="fa-brands fa-android"></i> Android / Windows</span>
+                <span><i class="fa-solid fa-code-branch"></i> v2.5.0</span>
+                <span><i class="fa-regular fa-file-zipper"></i> 3.4 MB</span>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s;">
+                    <i class="fa-solid fa-arrow-left" style="margin-right: 5px;"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
